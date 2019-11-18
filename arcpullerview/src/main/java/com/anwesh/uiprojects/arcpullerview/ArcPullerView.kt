@@ -30,7 +30,7 @@ fun Float.toFrom(s : Float, d : Float) : Float = s + (d - s) * this
 
 fun Canvas.drawArcPuller(size : Float, scale : Float, h : Float, paint : Paint) {
     val sc1 : Float = scale.divideScale(0, 2).sinify(2)
-    val sf : Float = scale.divideScale(1, 2).sinify(1)
+    val sf : Float = scale.sinify(1)
     val sc2 : Float = scale.divideScale(1, 2).cosify()
     save()
     translate(0f, size + (h - 2 * size) * sc2)
