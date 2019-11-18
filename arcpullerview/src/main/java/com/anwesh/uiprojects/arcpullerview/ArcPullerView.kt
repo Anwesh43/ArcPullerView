@@ -182,4 +182,26 @@ class ArcPullerView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : ArcPullerView) {
+
+        private val animator : Animator = Animator(view)
+        private val arcPuller : ArcPuller = ArcPuller(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            arcPuller.draw(canvas, paint)
+            animator.animate {
+                arcPuller.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            arcPuller.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
