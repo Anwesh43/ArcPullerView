@@ -205,4 +205,13 @@ class ArcPullerView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : ArcPullerView {
+            val view : ArcPullerView = ArcPullerView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
