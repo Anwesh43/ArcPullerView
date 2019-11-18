@@ -26,3 +26,29 @@ fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify(n : Int) : Float = Math.sin(this * (Math.PI / n)).toFloat()
 fun Float.cosify() : Float = 1f - Math.sin(Math.PI / 2 + (Math.PI / 2) * this).toFloat()
+fun Float.toFrom(s : Float, d : Float) : Float = s + (d - s) * this
+
+fun Canvas.drawArcPuller(size : Float, scale : Float, h : Float, paint : Paint) {
+    val sc1 : Float = scale.divideScale(0, 2).sinify(2)
+    val sf : Float = scale.divideScale(1, 2).sinify(1)
+    val sc2 : Float = scale.divideScale(1, 2).cosify()
+    save()
+    translate(0f, size + (h - 2 * size) * sc2)
+    drawArc(RectF(-size, -size, size, size), 0f, 360f * sc1, true, paint)
+    restore()
+    drawLine(0f, h - size, 0f, sf.toFrom(h - size, size), paint)
+}
+
+fun Canvas.drawAPNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = w / (nodes + 1)
+    val size : Float = gap / sizeFactor
+    paint.color = foreColor
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    save()
+    translate(gap * (i + 1), 0f)
+    drawArcPuller(size, scale, h, paint)
+    restore()
+}
