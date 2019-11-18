@@ -117,4 +117,42 @@ class ArcPullerView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class APNode(var i : Int, val state : State = State()) {
+
+        private var next : APNode? = null
+        private var prev : APNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = APNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawAPNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
+        }
+
+        fun update(cb : (Float) -> Unit) {
+            state.update(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : APNode {
+            var curr : APNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+    }
 }
